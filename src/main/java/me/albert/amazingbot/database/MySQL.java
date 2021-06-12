@@ -48,7 +48,7 @@ public class MySQL {
             e.printStackTrace();
         }
         if (!hasData()) {
-            AmazingBot.getInstance().getLogger().info("§c检测到切换到MYSQL储存,且尚未有任何绑定数据,开始从yaml导入....");
+            AmazingBot.getInstance().getPlugin().getLogger().info("§c检测到切换到MYSQL储存,且尚未有任何绑定数据,开始从yaml导入....");
             FileConfiguration data = AmazingBot.getData().getConfig();
             int imported = 0;
             for (String qq : data.getConfigurationSection("").getKeys(false)) {
@@ -56,7 +56,7 @@ public class MySQL {
                 imported++;
                 MySQL.savePlayer(Long.parseLong(qq), uuid);
             }
-            AmazingBot.getInstance().getLogger().info("§c已从YAML储存导入了" + imported + "条数据!");
+            AmazingBot.getInstance().getPlugin().getLogger().info("§c已从YAML储存导入了" + imported + "条数据!");
         }
     }
 

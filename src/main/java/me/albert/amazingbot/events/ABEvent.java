@@ -2,6 +2,7 @@ package me.albert.amazingbot.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -37,11 +38,11 @@ public class ABEvent extends Event {
         return metas.containsKey(key);
     }
 
+    @NotNull
     @Override
     public HandlerList getHandlers() {
         return handlers;
     }
-
 
     public net.mamoe.mirai.event.Event getEvent() {
         return event;
