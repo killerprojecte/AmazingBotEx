@@ -16,8 +16,8 @@ public class Bot {
     private static net.mamoe.mirai.Bot bot = null;
 
     private static void callEvent(Event event) {
-        if (!AmazingBot.getinstance().getConfig().getBoolean("async")) {
-            Bukkit.getScheduler().runTask(AmazingBot.getinstance(), () -> Bukkit.getPluginManager().callEvent(event));
+        if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
+            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             return;
         }
         Bukkit.getPluginManager().callEvent(event);
@@ -28,7 +28,7 @@ public class Bot {
             bot.close(new Throwable());
         }
 
-        FileConfiguration config = AmazingBot.getinstance().getConfig();
+        FileConfiguration config = AmazingBot.getInstance().getConfig();
         long qq = config.getLong("main.qq");
         String pasword = config.getString("main.password");
         // 使用自定义的配置
@@ -43,8 +43,7 @@ public class Bot {
             configuration.noBotLog();
             configuration.noNetworkLog();
         }
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getinstance(), () -> {
-            assert pasword != null;
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);
             bot.login();
             api = new BotAPI(bot);
