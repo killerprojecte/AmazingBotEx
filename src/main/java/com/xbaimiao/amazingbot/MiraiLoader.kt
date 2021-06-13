@@ -1,5 +1,12 @@
 package com.xbaimiao.amazingbot
 
+/* Download the mirai library during the first loading
+ * This can highly reduce the size of jar file
+ * Currently this system work but still not the best solution
+ *
+ * This system is completely depent on Taboolib library system
+ */
+
 import io.izzel.taboolib.loader.util.ILoader
 import io.izzel.taboolib.loader.util.IO
 import me.albert.amazingbot.AmazingBot

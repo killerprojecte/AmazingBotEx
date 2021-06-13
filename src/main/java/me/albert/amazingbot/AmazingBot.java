@@ -43,7 +43,7 @@ public class AmazingBot extends Plugin {
         MiraiLoader.start();
         instance = getPlugin();
         getPlugin().saveDefaultConfig();
-        Bukkit.getScheduler().runTaskLater(getPlugin(), Bot::start,30L);
+        Bukkit.getScheduler().runTaskLater(getPlugin(), Bot::start,30L); // xbaimiao - delay the task to make sure the bot start up properly
         registerEvent(new OnCommand());
         registerEvent(new NewPlayer());
         registerEvent(new OnBind());
