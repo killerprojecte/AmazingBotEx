@@ -1,5 +1,9 @@
 package me.albert.amazingbot.sqlite
 
+/* Add SQLite to store the data
+ * Depend on TabooLib SQL untils
+ */
+
 import io.izzel.taboolib.module.db.sql.SQLColumn
 import io.izzel.taboolib.module.db.sql.SQLColumnType
 import io.izzel.taboolib.module.db.sql.SQLTable
