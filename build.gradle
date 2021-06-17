@@ -6,8 +6,8 @@ plugins {
     id 'maven'
 }
 
-group = 'me.albert.amazingbot'
-version = '3.1'
+group = 'com.xbaimiao.easybot'
+version = '3.1.5'
 
 tasks.withType(JavaCompile){
     options.setEncoding("UTF-8")

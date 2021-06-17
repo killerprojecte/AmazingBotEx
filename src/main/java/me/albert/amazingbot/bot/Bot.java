@@ -1,5 +1,6 @@
 package me.albert.amazingbot.bot;
 
+import com.xbaimiao.easybot.EasyBot;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.*;
 import net.mamoe.mirai.BotFactory;
@@ -16,8 +17,8 @@ public class Bot {
     private static net.mamoe.mirai.Bot bot = null;
 
     private static void callEvent(Event event) {
-        if (!AmazingBot.getInstance().getPlugin().getConfig().getBoolean("async")) {
-            Bukkit.getScheduler().runTask(AmazingBot.getInstance().getPlugin(), () -> Bukkit.getPluginManager().callEvent(event));
+        if (!AmazingBot.getInstance().getConfig().getBoolean("async")) {
+            Bukkit.getScheduler().runTask(AmazingBot.getInstance(), () -> Bukkit.getPluginManager().callEvent(event));
             return;
         }
         Bukkit.getPluginManager().callEvent(event);
@@ -28,7 +29,7 @@ public class Bot {
             bot.close(new Throwable());
         }
 
-        FileConfiguration config = AmazingBot.getInstance().getPlugin().getConfig();
+        FileConfiguration config = EasyBot.config;
         long qq = config.getLong("main.qq");
         String pasword = config.getString("main.password");
         // 使用自定义的配置
@@ -43,10 +44,11 @@ public class Bot {
             configuration.noBotLog();
             configuration.noNetworkLog();
         }
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance().getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
+            assert pasword != null;
             bot = BotFactory.INSTANCE.newBot(qq, pasword, configuration);
             bot.login();
-            api = new BotAPI(bot);
+            setApi(new BotAPI(bot));
             bot.getEventChannel().subscribeAlways(net.mamoe.mirai.event.Event.class, event -> {
                 if (event instanceof NewFriendRequestEvent) {
                     callEvent(new FriendRequestEvent((NewFriendRequestEvent) event));
@@ -102,7 +104,6 @@ public class Bot {
     public static void setApi(BotAPI api) {
         Bot.api = api;
     }
-
 
     public static Boolean getConnected() {
         return connected;

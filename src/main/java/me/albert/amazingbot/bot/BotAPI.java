@@ -1,6 +1,6 @@
 package me.albert.amazingbot.bot;
 
-import me.albert.amazingbot.sqlite.SQLer;
+import com.xbaimiao.easybot.sqlite.SQLer;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.database.MySQL;
 import net.mamoe.mirai.contact.Friend;
@@ -19,11 +19,11 @@ public class BotAPI {
     }
 
     public void sendGroupMsg(String groupID, String msg) {
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getinstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
                 bot.getGroup(Long.parseLong(groupID)).sendMessage(msg);
             } catch (Exception e) {
-                if (AmazingBot.getinstance().getConfig().getBoolean("debug")) {
+                if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                     e.printStackTrace();
                 }
             }
@@ -31,11 +31,11 @@ public class BotAPI {
     }
 
     public void sendPrivateMsg(String userID, String msg) {
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getinstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
                 bot.getFriend(Long.parseLong(userID)).sendMessage(msg);
             } catch (Exception e) {
-                if (AmazingBot.getinstance().getConfig().getBoolean("debug")) {
+                if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                     e.printStackTrace();
                 }
             }
@@ -47,11 +47,11 @@ public class BotAPI {
     }
 
     public void changeTitle(Long groupID, Long userID, String title) {
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getinstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             try {
                 bot.getGroup(groupID).get(userID).setNameCard(title);
             } catch (Exception e) {
-                if (AmazingBot.getinstance().getConfig().getBoolean("debug")) {
+                if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                     e.printStackTrace();
                 }
             }
@@ -62,7 +62,7 @@ public class BotAPI {
         try {
             return bot.getGroup(groupID);
         } catch (Exception e) {
-            if (AmazingBot.getinstance().getConfig().getBoolean("debug")) {
+            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                 e.printStackTrace();
             }
         }
@@ -73,7 +73,7 @@ public class BotAPI {
         try {
             return bot.getFriend(userID);
         } catch (Exception e) {
-            if (AmazingBot.getinstance().getConfig().getBoolean("debug")) {
+            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                 e.printStackTrace();
             }
         }
@@ -124,8 +124,7 @@ public class BotAPI {
         FileConfiguration data = AmazingBot.getData().getConfig();
         for (String key : data.getConfigurationSection("").getKeys(false)) {
             if (data.getString(key).equalsIgnoreCase(playerID.toString())) {
-                return
-                        Long.parseLong(key);
+                return Long.parseLong(key);
             }
         }
         return userID;

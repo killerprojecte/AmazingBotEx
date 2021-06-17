@@ -50,7 +50,7 @@ public class CustomConfig {
             Config.load(ConfigFile);
             this.configFile = ConfigFile;
         } catch (IOException | InvalidConfigurationException e) {
-            if (AmazingBot.getinstance().getConfig().getBoolean("debug")) {
+            if (AmazingBot.getInstance().getConfig().getBoolean("debug")) {
                 e.printStackTrace();
             }
         }

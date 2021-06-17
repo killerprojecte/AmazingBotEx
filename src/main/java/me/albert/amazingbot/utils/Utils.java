@@ -9,7 +9,7 @@ import java.util.Date;
 public class Utils {
 
     public static boolean hasGroup(Long groupID) {
-        ConfigurationSection section = AmazingBot.getinstance().getConfig().getConfigurationSection("groups");
+        ConfigurationSection section = AmazingBot.getInstance().getConfig().getConfigurationSection("groups");
         assert section != null;
         for (String s : section.getKeys(false)) {
             if (s.equalsIgnoreCase(String.valueOf(groupID))) {

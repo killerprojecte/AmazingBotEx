@@ -1,14 +1,13 @@
-package me.albert.amazingbot.sqlite
+package com.xbaimiao.easybot.sqlite
 
 /* Add SQLite to store the data
  * Depend on TabooLib SQL untils
  */
 
-import me.albert.amazingbot.sqlite.SQL.data
-import me.albert.amazingbot.sqlite.SQL.sql
-import io.izzel.taboolib.module.config.TConfig
+import com.xbaimiao.easybot.EasyBot
+import com.xbaimiao.easybot.sqlite.SQL.data
+import com.xbaimiao.easybot.sqlite.SQL.sql
 import io.izzel.taboolib.module.db.sql.query.Where
-import io.izzel.taboolib.module.inject.TInject
 import me.albert.amazingbot.AmazingBot
 import java.util.*
 
@@ -16,12 +15,12 @@ object SQLer {
 
     @JvmStatic
     val isEnable: Boolean
-        get() = AmazingBot.config.getString("mode") == "sqlite"
+        get() = EasyBot.config.getString("mode") == "sqlite"
 
     init {
         if (isEnable) {
             if (!hasData()) {
-                AmazingBot.getinstance().logger.info("§c检测到切换到sqlite储存,且尚未有任何绑定数据,开始从yaml导入....")
+                AmazingBot.getInstance().logger.info("§c检测到切换到sqlite储存,且尚未有任何绑定数据,开始从yaml导入....")
                 val data = AmazingBot.getData().config
                 var imported = 0
                 for (qq in data.getKeys(false)) {
@@ -29,7 +28,7 @@ object SQLer {
                     imported += 1
                     setBinding(qq.toLong(), uuid)
                 }
-                AmazingBot.getinstance().logger.info("§c已从YAML储存导入了" + imported + "条数据!")
+                AmazingBot.getInstance().logger.info("§c已从YAML储存导入了" + imported + "条数据!")
             }
         }
     }
@@ -39,7 +38,7 @@ object SQLer {
         if (result.find()) {
             return true
         }
-        return false
+        return AmazingBot.getData().config.getKeys(true).isNotEmpty()
     }
 
     @JvmStatic

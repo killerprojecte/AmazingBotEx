@@ -1,5 +1,6 @@
 package me.albert.amazingbot.listeners;
 
+import io.izzel.taboolib.module.inject.TListener;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.GroupMessageEvent;
 import me.albert.amazingbot.utils.Utils;
@@ -10,16 +11,17 @@ import org.bukkit.event.Listener;
 
 import java.util.Date;
 
+@TListener
 public class NewPlayer implements Listener {
 
     @EventHandler
     public void msgCheck(GroupMessageEvent e) {
-        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getinstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(AmazingBot.getInstance(), () -> {
             if (!Utils.hasGroup(e.getGroupID())) {
                 return;
             }
-            String serverName = AmazingBot.getinstance().getConfig().getString("server_name");
-            String label = AmazingBot.getinstance().getConfig().getString("function.new_player")
+            String serverName = AmazingBot.getInstance().getConfig().getString("server_name");
+            String label = AmazingBot.getInstance().getConfig().getString("function.new_player")
                     .replace("%server%", serverName);
             if (e.getMsg().equalsIgnoreCase(label)) {
                 int i = 0;

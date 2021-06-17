@@ -2,6 +2,8 @@ package me.albert.amazingbot.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.izzel.taboolib.module.config.TConfig;
+import io.izzel.taboolib.module.inject.TInject;
 import me.albert.amazingbot.AmazingBot;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -11,12 +13,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.UUID;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 public class MySQL {
+
+    @TInject("mysql.yml")
+    public static TConfig cfg;
 
     public static boolean ENABLED = false;
 
@@ -25,7 +31,6 @@ public class MySQL {
 
     public static void setUP() {
         ENABLED = true;
-        FileConfiguration cfg = AmazingBot.getMysqlSettings().getConfig();
         HikariConfig config = new HikariConfig();
         config.setPoolName("AmazingBot");
         config.setDriverClassName("com.mysql.jdbc.Driver");
@@ -48,15 +53,15 @@ public class MySQL {
             e.printStackTrace();
         }
         if (!hasData()) {
-            AmazingBot.getInstance().getPlugin().getLogger().info("§c检测到切换到MYSQL储存,且尚未有任何绑定数据,开始从yaml导入....");
+            AmazingBot.getInstance().getLogger().info("§c检测到切换到MYSQL储存,且尚未有任何绑定数据,开始从yaml导入....");
             FileConfiguration data = AmazingBot.getData().getConfig();
             int imported = 0;
-            for (String qq : data.getConfigurationSection("").getKeys(false)) {
+            for (String qq : Objects.requireNonNull(data.getConfigurationSection("")).getKeys(false)) {
                 String uuid = data.getString(qq);
                 imported++;
                 MySQL.savePlayer(Long.parseLong(qq), uuid);
             }
-            AmazingBot.getInstance().getPlugin().getLogger().info("§c已从YAML储存导入了" + imported + "条数据!");
+            AmazingBot.getInstance().getLogger().info("§c已从YAML储存导入了" + imported + "条数据!");
         }
     }
 

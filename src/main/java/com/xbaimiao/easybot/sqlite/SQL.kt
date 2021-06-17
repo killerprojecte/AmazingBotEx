@@ -1,4 +1,4 @@
-package me.albert.amazingbot.sqlite
+package com.xbaimiao.easybot.sqlite
 
 /* Add SQLite to store the data
  * Depend on TabooLib SQL untils
@@ -16,9 +16,9 @@ import javax.sql.DataSource
 object SQL {
 
     @JvmStatic
-    val sqlHost: SQLiteHost =SQLiteHost(
-        File("${AmazingBot.getinstance().dataFolder}${File.separator}data.db"),
-        AmazingBot.getinstance()
+    val sqlHost: SQLiteHost = SQLiteHost(
+        File("${AmazingBot.getInstance().dataFolder}${File.separator}data.db"),
+        AmazingBot.getInstance()
     )
 
     @JvmStatic

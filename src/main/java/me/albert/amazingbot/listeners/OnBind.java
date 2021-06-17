@@ -1,5 +1,6 @@
 package me.albert.amazingbot.listeners;
 
+import io.izzel.taboolib.module.inject.TListener;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.bot.Bot;
 import me.albert.amazingbot.events.GroupMessageEvent;
@@ -15,16 +16,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
+@TListener
 public class OnBind implements Listener {
     private static final HashMap<UUID, Long> binds = new HashMap<>();
     private static final HashSet<Long> tempUser = new HashSet<>();
 
     @EventHandler
     public void onGroup(GroupMessageEvent e) {
-        if (!AmazingBot.getinstance().getConfig().getBoolean("groups." + e.getGroupID() + ".enable_bind")) {
+        if (!AmazingBot.getInstance().getConfig().getBoolean("groups." + e.getGroupID() + ".enable_bind")) {
             return;
         }
-        String bd = AmazingBot.getinstance().getConfig().getString("bd");
+        String bd = AmazingBot.getInstance().getConfig().getString("bd");
+        assert bd != null;
         if (e.getMsg().startsWith(bd)) {
             String userName = e.getMsg().substring(bd.length()).trim();
             if (Bukkit.getPlayerExact(userName) == null || isVanished(Bukkit.getPlayerExact(userName))) {
@@ -39,11 +42,14 @@ public class OnBind implements Listener {
             sendBind(e.getUserID(), p);
             e.response("请在游戏内根据提示完成验证!");
             tempUser.add(e.getUserID());
-            Bukkit.getScheduler().runTaskLater(AmazingBot.getinstance(), () -> tempUser.remove(e.getUserID()), 20 * 60 * 60);
+            Bukkit.getScheduler().runTaskLater(AmazingBot.getInstance(), () -> tempUser.remove(e.getUserID()), 20 * 60 * 60);
         }
     }
 
     private boolean isVanished(Player player) {
+        if (player == null) {
+            return false;
+        }
         for (MetadataValue meta : player.getMetadata("vanished")) {
             if (meta.asBoolean()) return true;
         }
@@ -71,14 +77,14 @@ public class OnBind implements Listener {
     }
 
     private void sendBind(Long userID, Player p) {
-        List<String> messages = AmazingBot.getinstance().getConfig().getStringList("messages.bind");
+        List<String> messages = AmazingBot.getInstance().getConfig().getStringList("messages.bind");
         for (String s : messages) {
             s = s.replace("&", "§")
                     .replace("%user%", String.valueOf(userID));
             p.sendMessage(s);
         }
         binds.put(p.getUniqueId(), userID);
-        Bukkit.getScheduler().runTaskLater(AmazingBot.getinstance(), () -> binds.remove(p.getUniqueId()), 20 * 60);
+        Bukkit.getScheduler().runTaskLater(AmazingBot.getInstance(), () -> binds.remove(p.getUniqueId()), 20 * 60);
 
     }
 

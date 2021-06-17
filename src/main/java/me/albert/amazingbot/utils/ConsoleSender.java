@@ -32,7 +32,7 @@ public class ConsoleSender implements ConsoleCommandSender {
 
     private void send() {
         Bukkit.getScheduler().cancelTask(taskid);
-        taskid = Bukkit.getScheduler().runTaskLaterAsynchronously(AmazingBot.getinstance(), () -> {
+        taskid = Bukkit.getScheduler().runTaskLaterAsynchronously(AmazingBot.getInstance(), () -> {
             StringBuilder output = new StringBuilder();
             for (String s : this.output) {
                 output.append(s.replaceAll("§\\S", "")).append("\n");
