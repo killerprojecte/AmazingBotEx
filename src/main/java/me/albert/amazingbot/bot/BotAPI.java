@@ -1,6 +1,7 @@
 package me.albert.amazingbot.bot;
 
-import com.xbaimiao.easybot.sqlite.SQLer;
+import com.xbaimiao.easybot.EasyBot;
+import com.xbaimiao.easybot.data.sqlite.SQLer;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.database.MySQL;
 import net.mamoe.mirai.contact.Friend;
@@ -85,49 +86,15 @@ public class BotAPI {
     }
 
     public void setBind(Long userID, UUID uuid) {
-        if (MySQL.ENABLED) {
-            MySQL.savePlayer(userID, uuid.toString());
-            return;
-        }
-        if (SQLer.isEnable()) {
-            SQLer.setBinding(userID, uuid.toString());
-            return;
-        }
-        FileConfiguration data = AmazingBot.getData().getConfig();
-        data.set(String.valueOf(userID), uuid.toString());
-        AmazingBot.getData().save();
+        EasyBot.INSTANCE.getBindIO().setBind(userID, uuid.toString());
     }
 
     public UUID getPlayer(Long userID) {
-        if (MySQL.ENABLED) {
-            return MySQL.getPlayer(userID);
-        }
-        if (SQLer.isEnable()) {
-            return SQLer.getUUID(userID);
-        }
-        UUID uuid = null;
-        FileConfiguration data = AmazingBot.getData().getConfig();
-        if (data.getString(String.valueOf(userID)) != null) {
-            uuid = UUID.fromString(data.getString(String.valueOf(userID)));
-        }
-        return uuid;
+        return EasyBot.INSTANCE.getBindIO().getPlayer(userID);
     }
 
     public Long getUser(UUID playerID) {
-        if (MySQL.ENABLED) {
-            return MySQL.getQQ(playerID.toString());
-        }
-        if (SQLer.isEnable()) {
-            return SQLer.getQQ(playerID);
-        }
-        Long userID = null;
-        FileConfiguration data = AmazingBot.getData().getConfig();
-        for (String key : data.getConfigurationSection("").getKeys(false)) {
-            if (data.getString(key).equalsIgnoreCase(playerID.toString())) {
-                return Long.parseLong(key);
-            }
-        }
-        return userID;
+        return EasyBot.INSTANCE.getBindIO().getUser(playerID.toString());
     }
 
 

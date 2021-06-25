@@ -1,6 +1,5 @@
 package me.albert.amazingbot.listeners;
 
-import io.izzel.taboolib.module.inject.TListener;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.bot.Bot;
 import me.albert.amazingbot.events.GroupMessageEvent;
@@ -16,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-@TListener
 public class OnBind implements Listener {
     private static final HashMap<UUID, Long> binds = new HashMap<>();
     private static final HashSet<Long> tempUser = new HashSet<>();

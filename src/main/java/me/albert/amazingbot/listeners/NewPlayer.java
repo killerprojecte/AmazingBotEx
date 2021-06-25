@@ -1,6 +1,5 @@
 package me.albert.amazingbot.listeners;
 
-import io.izzel.taboolib.module.inject.TListener;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.GroupMessageEvent;
 import me.albert.amazingbot.utils.Utils;
@@ -11,7 +10,6 @@ import org.bukkit.event.Listener;
 
 import java.util.Date;
 
-@TListener
 public class NewPlayer implements Listener {
 
     @EventHandler

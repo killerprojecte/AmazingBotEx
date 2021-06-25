@@ -1,62 +1,67 @@
 package com.xbaimiao.easybot
 
-import com.xbaimiao.easybot.sqlite.SQLer.isEnable
-import io.izzel.taboolib.loader.Plugin
-import io.izzel.taboolib.module.config.TConfig
-import io.izzel.taboolib.module.inject.TInject
+import com.xbaimiao.easybot.data.BindIO
+import com.xbaimiao.easybot.data.sqlite.SQLer
+import com.xbaimiao.easybot.data.yaml.Yaml
+import com.xbaimiao.easybot.utils.Setting
+import me.albert.amazingbot.AmazingBot
 import me.albert.amazingbot.bot.Bot
 import me.albert.amazingbot.database.MySQL
 import me.albert.amazingbot.listeners.NewPlayer
 import me.albert.amazingbot.listeners.OnBind
 import me.albert.amazingbot.listeners.OnCommand
-import me.albert.amazingbot.utils.CustomConfig
 import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 
-object EasyBot : Plugin() {
+/**
+ * 插件主类，原来为 AmazingBot
+ */
+class EasyBot : JavaPlugin() {
+
+    companion object {
+        lateinit var INSTANCE: EasyBot
+    }
 
     init {
+        INSTANCE = this
         MiraiLoader.start()
     }
 
-    @TInject(value = ["config.yml"])
-    lateinit var config: TConfig
+    lateinit var data: Setting
+        private set
 
-    private var instance: JavaPlugin? = null
-    private var data: CustomConfig? = null
-
-    fun getData(): CustomConfig? {
-        return data
-    }
-
+    lateinit var bindIO: BindIO
+        private set
 
     override fun onEnable() {
-        instance = plugin
-        plugin.saveDefaultConfig()
-        Bukkit.getScheduler().runTaskLater(plugin, Runnable { Bot.start() }, 30L)
-        registerEvent(OnCommand())
+        saveDefaultConfig()
+        AmazingBot.start()
         registerEvent(NewPlayer())
         registerEvent(OnBind())
-        data = CustomConfig("data.yml", instance)
-        if (MySQL.cfg.getBoolean("enable")) {
-            MySQL.setUP()
+        registerEvent(OnCommand())
+        Bukkit.getScheduler().runTaskLater(this, Runnable { Bot.start() }, 30L)
+        data = Setting(INSTANCE, "data.yml")
+        if (MySQL.isENABLED()) {
+            bindIO = MySQL()
+            logger.info("enable mysql save this bot data")
+            return
         }
-        if (isEnable) {
-            plugin.logger.info("已启用sqlite储存数据")
+        if (SQLer.isEnable) {
+            bindIO = SQLer
+            logger.info("enable sqlite save this bot data")
+            return
         }
+        bindIO = Yaml()
+        logger.info("enable yaml save this bot data")
     }
 
     private fun registerEvent(listener: Listener) {
-        Bukkit.getServer().pluginManager.registerEvents(listener, instance!!)
+        Bukkit.getServer().pluginManager.registerEvents(listener, INSTANCE)
     }
 
     override fun onDisable() {
-        if (MySQL.ENABLED) {
-            MySQL.close()
-            return
-        }
-        data!!.save()
+        bindIO.save()
     }
 
 }

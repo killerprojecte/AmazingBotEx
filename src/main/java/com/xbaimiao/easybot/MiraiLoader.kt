@@ -7,14 +7,19 @@ package com.xbaimiao.easybot
  * This system is completely depent on Taboolib library system
  */
 
-import io.izzel.taboolib.loader.util.ILoader
-import io.izzel.taboolib.loader.util.IO
-import me.albert.amazingbot.AmazingBot
+import com.xbaimiao.easybot.utils.IO
 import java.io.File
 
 object MiraiLoader {
 
     private val folder = "plugins${File.separator}TabooLib${File.separator}libs"
+
+    init {
+        val f = File(folder)
+        if (!f.exists()){
+            f.mkdirs()
+        }
+    }
 
     private val libs = ArrayList<Lib>().also {
         val miraiVersion = "2.6.6"
@@ -26,13 +31,13 @@ object MiraiLoader {
     fun start() {
         for (lib in libs) {
             if (!lib.file.exists()) {
-                AmazingBot.getInstance().logger.info("download ${lib.file.name} ...")
+                EasyBot.INSTANCE.logger.info("download ${lib.file.name} ...")
                 IO.downloadFile(lib.url, lib.file)
-                AmazingBot.getInstance().logger.info("download ${lib.file.name} success!")
+                EasyBot.INSTANCE.logger.info("download ${lib.file.name} success!")
             }
-            ILoader.addPath(lib.file)
+            Loader.addPath(lib.file)
         }
-        AmazingBot.getInstance().logger.info("EasyBot 所需依赖加载完成")
+        EasyBot.INSTANCE.logger.info("EasyBot 所需依赖加载完成")
     }
 
     class Lib(val url: String) {

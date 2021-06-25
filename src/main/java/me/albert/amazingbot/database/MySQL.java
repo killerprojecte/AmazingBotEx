@@ -1,9 +1,10 @@
 package me.albert.amazingbot.database;
 
+import com.xbaimiao.easybot.EasyBot;
+import com.xbaimiao.easybot.data.BindIO;
+import com.xbaimiao.easybot.utils.Setting;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import io.izzel.taboolib.module.config.TConfig;
-import io.izzel.taboolib.module.inject.TInject;
 import me.albert.amazingbot.AmazingBot;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -19,17 +20,21 @@ import java.util.UUID;
 
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
-public class MySQL {
+public class MySQL implements BindIO {
 
-    @TInject("mysql.yml")
-    public static TConfig cfg;
+    public static Setting cfg = new Setting("mysql.yml");
+
+    public static boolean isENABLED() {
+        String mode = EasyBot.INSTANCE.getConfig().getString("mode");
+        return mode != null && mode.equals("mysql");
+    }
 
     public static boolean ENABLED = false;
 
     public static HikariDataSource dataSource;
     private static String DATABASE;
 
-    public static void setUP() {
+    public MySQL() {
         ENABLED = true;
         HikariConfig config = new HikariConfig();
         config.setPoolName("AmazingBot");
@@ -54,18 +59,18 @@ public class MySQL {
         }
         if (!hasData()) {
             AmazingBot.getInstance().getLogger().info("§c检测到切换到MYSQL储存,且尚未有任何绑定数据,开始从yaml导入....");
-            FileConfiguration data = AmazingBot.getData().getConfig();
+            FileConfiguration data = AmazingBot.getData();
             int imported = 0;
             for (String qq : Objects.requireNonNull(data.getConfigurationSection("")).getKeys(false)) {
                 String uuid = data.getString(qq);
                 imported++;
-                MySQL.savePlayer(Long.parseLong(qq), uuid);
+                setBind(Long.parseLong(qq), uuid);
             }
             AmazingBot.getInstance().getLogger().info("§c已从YAML储存导入了" + imported + "条数据!");
         }
     }
 
-    public static void createTables() throws SQLException {
+    public void createTables() throws SQLException {
         String file = "/create.sql";
         try (InputStream in = AmazingBot.getInstance().getClass().getResourceAsStream(file);
              BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -89,7 +94,7 @@ public class MySQL {
         }
     }
 
-    public static boolean hasData() {
+    public boolean hasData() {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("SELECT * FROM `" + DATABASE + "`.`binds` LIMIT 1;")) {
             try (ResultSet resultSet = stmt.executeQuery()) {
@@ -103,7 +108,8 @@ public class MySQL {
         return false;
     }
 
-    public static void savePlayer(Long qq, String uuid) {
+    @Override
+    public void setBind(Long qq, String uuid) {
         if (getPlayer(qq) != null) {
             try (Connection con = dataSource.getConnection();
                  PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
@@ -117,7 +123,7 @@ public class MySQL {
             }
             return;
         }
-        if (getQQ(uuid) != null) {
+        if (getUser(uuid) != null) {
             try (Connection con = dataSource.getConnection();
                  PreparedStatement stmt = con.prepareStatement("UPDATE  `" + DATABASE + "`.`binds` " +
                          "SET `qq`=?, `uuid`=? WHERE `uuid`=?;", RETURN_GENERATED_KEYS)) {
@@ -143,7 +149,8 @@ public class MySQL {
         }
     }
 
-    public static UUID getPlayer(Long qq) {
+    @Override
+    public UUID getPlayer(Long qq) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
                      "FROM `" + DATABASE + "`.`binds` WHERE  `qq`=?;")) {
@@ -160,7 +167,7 @@ public class MySQL {
         return null;
     }
 
-    public static void removePlayer(Long qq) {
+    public void removePlayer(Long qq) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("DELETE " +
                      "FROM `" + DATABASE + "`.`binds` WHERE  `qq`=?;")) {
@@ -171,7 +178,7 @@ public class MySQL {
         }
     }
 
-    public static void removePlayer(String uuid) {
+    public void removePlayer(String uuid) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("DELETE " +
                      "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {
@@ -182,7 +189,8 @@ public class MySQL {
         }
     }
 
-    public static Long getQQ(String UUID) {
+    @Override
+    public Long getUser(String UUID) {
         try (Connection con = dataSource.getConnection();
              PreparedStatement stmt = con.prepareStatement("SELECT `id`, `qq`, `uuid` " +
                      "FROM `" + DATABASE + "`.`binds` WHERE  `uuid`=?;")) {
@@ -196,6 +204,11 @@ public class MySQL {
             sqlEx.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void save() {
+        close();
     }
 
     public static void close() {

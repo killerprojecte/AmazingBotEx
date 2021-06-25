@@ -1,6 +1,5 @@
 package me.albert.amazingbot.events;
 
-
 import me.albert.amazingbot.bot.Bot;
 import net.mamoe.mirai.Mirai;
 import net.mamoe.mirai.event.events.MessageEvent;
@@ -35,6 +34,5 @@ public class MessageReceiveEvent extends ABEvent {
     public void recall() {
         Mirai.getInstance().recallMessage(Bot.getApi().getBot(), getEvent().getSource());
     }
-
 
 }

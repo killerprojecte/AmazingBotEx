@@ -1,6 +1,5 @@
 package me.albert.amazingbot.listeners;
 
-import io.izzel.taboolib.module.inject.TListener;
 import me.albert.amazingbot.AmazingBot;
 import me.albert.amazingbot.events.GroupMessageEvent;
 import me.albert.amazingbot.utils.ConsoleSender;
@@ -12,7 +11,6 @@ import org.bukkit.event.Listener;
 
 import java.util.List;
 
-@TListener
 public class OnCommand implements Listener {
 
     private static boolean isAdmin(Long userID) {

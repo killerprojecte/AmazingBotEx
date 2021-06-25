@@ -1,20 +1,21 @@
 package me.albert.amazingbot
 
-import io.izzel.taboolib.module.command.base.BaseCommand
-import io.izzel.taboolib.module.command.base.BaseMainCommand
-import io.izzel.taboolib.module.command.base.SubCommand
 import me.albert.amazingbot.bot.Bot
+import org.bukkit.command.Command
+import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 
-@BaseCommand(name = "amazingbot", aliases = ["amb"])
-class Commands : BaseMainCommand() {
+class Commands : CommandExecutor {
 
-    @SubCommand(description = "重载机器人", permission = "amb.op")
-    fun reload(sender: CommandSender, args: Array<String>) {
+    override fun onCommand(p0: CommandSender, p1: Command, p2: String, p3: Array<out String>): Boolean {
+        if (!p0.hasPermission("op")){
+            return true
+        }
         AmazingBot.getInstance().reloadConfig()
         AmazingBot.getData().reload()
         Bot.start()
-        sender.sendMessage("§a所有配置文件已经重新载入!")
+        p0.sendMessage("§a所有配置文件已经重新载入!")
+        return true
     }
 
 }

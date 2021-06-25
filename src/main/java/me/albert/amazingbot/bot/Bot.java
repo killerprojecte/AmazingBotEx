@@ -29,7 +29,7 @@ public class Bot {
             bot.close(new Throwable());
         }
 
-        FileConfiguration config = EasyBot.config;
+        FileConfiguration config = EasyBot.INSTANCE.getConfig();
         long qq = config.getLong("main.qq");
         String pasword = config.getString("main.password");
         // 使用自定义的配置
@@ -53,6 +53,9 @@ public class Bot {
                 if (event instanceof NewFriendRequestEvent) {
                     callEvent(new FriendRequestEvent((NewFriendRequestEvent) event));
                     return;
+                }
+                if (event instanceof MemberLeaveEvent){
+                    callEvent(new GroupMemberLeaveEvent((MemberLeaveEvent) event));
                 }
                 if (event instanceof MemberJoinEvent) {
                     callEvent(new GroupMemberJoinEvent((MemberJoinEvent) event));
