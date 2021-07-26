@@ -6,6 +6,7 @@ import net.mamoe.mirai.utils.BotConfiguration;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("请输入机器人QQ号码");
