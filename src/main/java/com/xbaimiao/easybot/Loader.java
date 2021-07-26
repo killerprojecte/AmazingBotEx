@@ -1,38 +1,43 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.xbaimiao.easybot;
+
+import org.bukkit.Bukkit;
+import sun.misc.Unsafe;
 
 import java.io.File;
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodType;
 import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import org.bukkit.Bukkit;
-import sun.misc.Unsafe;
 
 public class Loader extends URLClassLoader {
 
     static Lookup lookup;
     static Unsafe unsafe;
-    static Method addUrlMethod;
+
+    static {
+        try {
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(null);
+            Field lookupField = Lookup.class.getDeclaredField("IMPL_LOOKUP");
+            Object lookupBase = unsafe.staticFieldBase(lookupField);
+            long lookupOffset = unsafe.staticFieldOffset(lookupField);
+            lookup = (Lookup) unsafe.getObject(lookupBase, lookupOffset);
+        } catch (Throwable ignored) {
+        }
+
+    }
 
     public Loader(URL[] urls) {
         super(urls);
     }
-    static boolean isfo = false;
 
     public static boolean addPath(File file) {
         try {
             ClassLoader loader = Bukkit.class.getClassLoader();
-            if (isfo) {
-                addUrlMethod.invoke(loader, file.toURI().toURL());
-            } else if (loader.getClass().getSimpleName().equals("LaunchClassLoader")) {
+            if (loader.getClass().getSimpleName().equals("LaunchClassLoader")) {
                 MethodHandle methodHandle = lookup.findVirtual(loader.getClass(), "addURL", MethodType.methodType(Void.TYPE, URL.class));
                 methodHandle.invoke(loader, file.toURI().toURL());
             } else {
@@ -54,27 +59,5 @@ public class Loader extends URLClassLoader {
             var8.printStackTrace();
             return false;
         }
-    }
-
-    static {
-        if (isfo) {
-            try {
-                addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-                addUrlMethod.setAccessible(true);
-            } catch (Throwable var6) {
-            }
-        }
-
-        try {
-            Field field = Unsafe.class.getDeclaredField("theUnsafe");
-            field.setAccessible(true);
-            unsafe = (Unsafe)field.get((Object)null);
-            Field lookupField = Lookup.class.getDeclaredField("IMPL_LOOKUP");
-            Object lookupBase = unsafe.staticFieldBase(lookupField);
-            long lookupOffset = unsafe.staticFieldOffset(lookupField);
-            lookup = (Lookup)unsafe.getObject(lookupBase, lookupOffset);
-        } catch (Throwable var5) {
-        }
-
     }
 }

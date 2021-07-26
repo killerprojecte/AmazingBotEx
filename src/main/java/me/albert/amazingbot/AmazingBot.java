@@ -1,10 +1,9 @@
 package me.albert.amazingbot;
 
 import com.xbaimiao.easybot.EasyBot;
+import com.xbaimiao.easybot.data.UserData;
 import com.xbaimiao.easybot.utils.Setting;
-import me.albert.amazingbot.utils.CustomConfig;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * 保留原有api，主类已移动至 EasyBot
@@ -13,12 +12,16 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class AmazingBot {
 
-    public static JavaPlugin getInstance() {
+    public static EasyBot getInstance() {
         return EasyBot.INSTANCE;
     }
 
     public static Setting getData() {
         return EasyBot.INSTANCE.getData();
+    }
+
+    public static UserData getBindIO() {
+        return EasyBot.INSTANCE.getUserData();
     }
 
     public static void start() {

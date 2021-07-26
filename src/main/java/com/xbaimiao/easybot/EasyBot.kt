@@ -1,12 +1,12 @@
 package com.xbaimiao.easybot
 
-import com.xbaimiao.easybot.data.BindIO
-import com.xbaimiao.easybot.data.sqlite.SQLer
+import com.xbaimiao.easybot.data.UserData
+import com.xbaimiao.easybot.data.sql.MySQL
+import com.xbaimiao.easybot.data.sql.SQLite
 import com.xbaimiao.easybot.data.yaml.Yaml
 import com.xbaimiao.easybot.utils.Setting
 import me.albert.amazingbot.AmazingBot
 import me.albert.amazingbot.bot.Bot
-import me.albert.amazingbot.database.MySQL
 import me.albert.amazingbot.listeners.NewPlayer
 import me.albert.amazingbot.listeners.OnBind
 import me.albert.amazingbot.listeners.OnCommand
@@ -24,6 +24,7 @@ class EasyBot : JavaPlugin() {
     }
 
     init {
+        KotlinLoader.start()
         INSTANCE = this
         MiraiLoader.start()
     }
@@ -31,7 +32,7 @@ class EasyBot : JavaPlugin() {
     lateinit var data: Setting
         private set
 
-    lateinit var bindIO: BindIO
+    lateinit var userData: UserData
         private set
 
     override fun onEnable() {
@@ -43,16 +44,16 @@ class EasyBot : JavaPlugin() {
         Bukkit.getScheduler().runTaskLater(this, Runnable { Bot.start() }, 30L)
         data = Setting(INSTANCE, "data.yml")
         if (MySQL.isENABLED()) {
-            bindIO = MySQL()
+            userData = MySQL()
             logger.info("enable mysql save this bot data")
             return
         }
-        if (SQLer.isEnable) {
-            bindIO = SQLer
+        if (SQLite.isEnable) {
+            userData = SQLite
             logger.info("enable sqlite save this bot data")
             return
         }
-        bindIO = Yaml()
+        userData = Yaml()
         logger.info("enable yaml save this bot data")
     }
 
@@ -61,7 +62,7 @@ class EasyBot : JavaPlugin() {
     }
 
     override fun onDisable() {
-        bindIO.save()
+        userData.save()
     }
 
 }

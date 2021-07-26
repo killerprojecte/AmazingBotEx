@@ -1,14 +1,12 @@
 package com.xbaimiao.easybot.data.yaml;
 
 import com.xbaimiao.easybot.EasyBot;
-import com.xbaimiao.easybot.data.BindIO;
+import com.xbaimiao.easybot.data.UserData;
 import com.xbaimiao.easybot.utils.Setting;
-import me.albert.amazingbot.AmazingBot;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
-public class Yaml implements BindIO {
+public class Yaml implements UserData {
 
     Setting setting = EasyBot.INSTANCE.getData();
 
@@ -44,4 +42,20 @@ public class Yaml implements BindIO {
     public void save() {
         setting.saveToFile();
     }
+
+    @Override
+    public void remove(Long qq) {
+        setting.set(String.valueOf(qq), null);
+    }
+
+    @Override
+    public void remove(String uuid) {
+        for (String key : setting.getKeys(false)) {
+            String uid = setting.getString(key);
+            if (uid != null && uid.equalsIgnoreCase(uuid)) {
+                setting.set(key, null);
+            }
+        }
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.xbaimiao.easybot.utils
 
-import kotlin.Throws
 import java.awt.image.BufferedImage
 import java.io.*
 import java.net.URL

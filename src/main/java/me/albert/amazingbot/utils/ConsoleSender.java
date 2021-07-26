@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ConsoleSender implements ConsoleCommandSender {
+
     private static int taskid;
     private final Server server;
     private final GroupMessageEvent e;
@@ -41,7 +42,6 @@ public class ConsoleSender implements ConsoleCommandSender {
             this.output.clear();
         }, 4).getTaskId();
     }
-
 
     private Optional<ConsoleCommandSender> get() {
         return Optional.ofNullable(this.server.getConsoleSender());

@@ -1,13 +1,10 @@
 package me.albert.amazingbot.bot;
 
 import com.xbaimiao.easybot.EasyBot;
-import com.xbaimiao.easybot.data.sqlite.SQLer;
 import me.albert.amazingbot.AmazingBot;
-import me.albert.amazingbot.database.MySQL;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
@@ -86,15 +83,15 @@ public class BotAPI {
     }
 
     public void setBind(Long userID, UUID uuid) {
-        EasyBot.INSTANCE.getBindIO().setBind(userID, uuid.toString());
+        EasyBot.INSTANCE.getUserData().setBind(userID, uuid.toString());
     }
 
     public UUID getPlayer(Long userID) {
-        return EasyBot.INSTANCE.getBindIO().getPlayer(userID);
+        return EasyBot.INSTANCE.getUserData().getPlayer(userID);
     }
 
     public Long getUser(UUID playerID) {
-        return EasyBot.INSTANCE.getBindIO().getUser(playerID.toString());
+        return EasyBot.INSTANCE.getUserData().getUser(playerID.toString());
     }
 
 

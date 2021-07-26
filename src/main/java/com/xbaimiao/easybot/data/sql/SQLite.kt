@@ -1,13 +1,14 @@
-package com.xbaimiao.easybot.data.sqlite
+package com.xbaimiao.easybot.data.sql
 
 import com.xbaimiao.easybot.EasyBot
-import com.xbaimiao.easybot.data.BindIO
-import com.xbaimiao.easybot.data.sqlite.SQL.TABLE_NAME
-import com.xbaimiao.easybot.data.sqlite.SQL.dataBase
+import com.xbaimiao.easybot.data.UserData
+import com.xbaimiao.easybot.data.sql.SQL.TABLE_NAME
+import com.xbaimiao.easybot.data.sql.SQL.dataBase
 import me.albert.amazingbot.AmazingBot
+import org.bukkit.Bukkit
 import java.util.*
 
-object SQLer : BindIO {
+object SQLite : UserData {
 
     @JvmStatic
     val isEnable: Boolean
@@ -39,12 +40,14 @@ object SQLer : BindIO {
 
     override fun setBind(qq: Long, uuid: String) {
         var sql = "SELECT * FROM $TABLE_NAME WHERE qq=$qq;"
+        val offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuid))
+        val name = offlinePlayer.name
         val result = dataBase.executeQuery(sql)
         if (result.next()) {
-            sql = "UPDATE $TABLE_NAME SET uuid='$uuid' WHERE qq=$qq;"
+            sql = "UPDATE $TABLE_NAME SET uuid='$uuid', name='$name' WHERE qq=$qq;"
             dataBase.executeUpdate(sql)
         } else {
-            sql = "INSERT INTO $TABLE_NAME (qq,uuid) VALUES ($qq,'$uuid');"
+            sql = "INSERT INTO $TABLE_NAME (qq,uuid,name) VALUES ($qq,'$uuid','$name');"
             dataBase.executeUpdate(sql)
         }
     }
@@ -52,7 +55,7 @@ object SQLer : BindIO {
     override fun getPlayer(qq: Long): UUID? {
         val sql = "SELECT * FROM $TABLE_NAME WHERE qq=$qq;"
         val result = dataBase.executeQuery(sql)
-        var uuid: String? = null
+        val uuid: String?
         if (!result.next()) {
             return null
         } else {
@@ -63,7 +66,7 @@ object SQLer : BindIO {
 
     override fun getUser(uuid: String): Long? {
         val sql = "SELECT * FROM $TABLE_NAME WHERE uuid='$uuid';"
-        val result = dataBase.executeQuery(sql) //data.select().where(Where.`is`("uuid", id.toString())).to(dataBase)
+        val result = dataBase.executeQuery(sql)
         return if (!result.next()) {
             null
         } else {
@@ -73,6 +76,21 @@ object SQLer : BindIO {
 
     override fun save() {
         dataBase.close()
+        SQL.connection.close()
+    }
+
+    /**
+     * remove user
+     */
+    override fun remove(qq: Long) {
+        dataBase.executeUpdate("DELETE FROM $TABLE_NAME WHERE qq=$qq;")
+    }
+
+    /**
+     * remove user
+     */
+    override fun remove(uuid: String) {
+        dataBase.executeUpdate("DELETE FROM $TABLE_NAME WHERE uuid='$uuid';")
     }
 
 }

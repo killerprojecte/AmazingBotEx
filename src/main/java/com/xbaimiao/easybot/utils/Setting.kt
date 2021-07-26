@@ -19,7 +19,7 @@ open class Setting(val file: File) : YamlConfiguration() {
         if (!file.exists()) {
             try {
                 file.createNewFile()
-                val name = file.path.replace(EasyBot.INSTANCE.dataFolder.path, "")
+                val name = file.path.replace(EasyBot.INSTANCE.dataFolder.path, "").substring(1)
                 EasyBot.INSTANCE.logger.info("尝试获取文件$name")
                 EasyBot.INSTANCE.getResource(name)?.let {
                     IO.toFile(it, file)

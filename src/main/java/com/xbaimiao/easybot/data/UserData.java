@@ -2,7 +2,7 @@ package com.xbaimiao.easybot.data;
 
 import java.util.UUID;
 
-public interface BindIO {
+public interface UserData {
 
     /**
      * set bind data for qq,uuid
@@ -22,8 +22,16 @@ public interface BindIO {
     /**
      * save data
      */
-    default void save() {
+    void save();
 
-    }
+    /**
+     * remove user
+     */
+    void remove(Long qq);
+
+    /**
+     * remove user
+     */
+    void remove(String uuid);
 
 }

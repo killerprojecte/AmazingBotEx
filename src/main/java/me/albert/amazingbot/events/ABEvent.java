@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ABEvent extends Event {
+
     private static final HandlerList handlers = new HandlerList();
     private final net.mamoe.mirai.event.Event event;
 
@@ -47,4 +48,5 @@ public class ABEvent extends Event {
     public net.mamoe.mirai.event.Event getEvent() {
         return event;
     }
+
 }

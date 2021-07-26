@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class OnBind implements Listener {
+
     private static final HashMap<UUID, Long> binds = new HashMap<>();
     private static final HashSet<Long> tempUser = new HashSet<>();
 
@@ -34,6 +35,10 @@ public class OnBind implements Listener {
             }
             if (tempUser.contains(e.getUserID())) {
                 e.response("1小时内仅允许一次此操作!");
+                return;
+            }
+            if (AmazingBot.getBindIO().getPlayer(e.getUserID()) != null) {
+                e.response("已在数据库发现你的绑定数据了,不可再次绑定!");
                 return;
             }
             Player p = Bukkit.getPlayerExact(userName);

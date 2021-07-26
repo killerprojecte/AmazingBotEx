@@ -6,17 +6,16 @@ package com.xbaimiao.easybot
  *
  * This system is completely depent on Taboolib library system
  */
-
 import com.xbaimiao.easybot.utils.IO
 import java.io.File
 
 object MiraiLoader {
 
-    private val folder = "plugins${File.separator}TabooLib${File.separator}libs"
+    private val folder = "libs"
 
     init {
         val f = File(folder)
-        if (!f.exists()){
+        if (!f.exists()) {
             f.mkdirs()
         }
     }
@@ -31,9 +30,9 @@ object MiraiLoader {
     fun start() {
         for (lib in libs) {
             if (!lib.file.exists()) {
-                EasyBot.INSTANCE.logger.info("download ${lib.file.name} ...")
+                EasyBot.INSTANCE.logger.info("下载机器人依赖 ${lib.file.name} ...")
                 IO.downloadFile(lib.url, lib.file)
-                EasyBot.INSTANCE.logger.info("download ${lib.file.name} success!")
+                EasyBot.INSTANCE.logger.info("${lib.file.name} 下载完成!")
             }
             Loader.addPath(lib.file)
         }
