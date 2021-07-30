@@ -13,7 +13,6 @@ object SQLImpl : UserData, SQLSource() {
 
     init {
         if (DataType.isSQL()) {
-            println(hasData())
             if (!hasData()) {
                 AmazingBot.getInstance().logger.info("§c检测到切换到sql储存,且尚未有任何绑定数据,开始从YAML导入....")
                 val data = AmazingBot.getData()

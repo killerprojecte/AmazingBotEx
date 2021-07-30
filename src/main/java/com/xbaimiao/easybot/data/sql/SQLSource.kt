@@ -44,7 +44,6 @@ abstract class SQLSource {
                 this.connection =
                     DriverManager.getConnection("jdbc:sqlite:${EasyBot.INSTANCE.dataFolder}${File.separator}data.db")
                 this.dataBase = connection.createStatement()
-                EasyBot.INSTANCE.logger.info("open database 'data.db' success")
             }
             DataType.MYSQL -> {
                 val mysql = Setting("mysql.yml")
@@ -60,7 +59,6 @@ abstract class SQLSource {
                 Class.forName("com.mysql.jdbc.Driver")
                 this.connection = DriverManager.getConnection(dbUrl, mysqlUser, mysqlPassword)
                 this.dataBase = connection.createStatement()
-                EasyBot.INSTANCE.logger.info("open database ${mysql.getString("storage.database")} success")
                 Bukkit.getScheduler().runTaskTimerAsynchronously(EasyBot.INSTANCE, Runnable {
                     SQLImpl.getPlayer(3104026189)
                 }, 200, 200)
