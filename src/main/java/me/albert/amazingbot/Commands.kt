@@ -18,6 +18,7 @@ class Commands : TabExecutor {
         if (args.isEmpty()) {
             sender.sendMessage("/amb reload -> 重载配置文件")
             sender.sendMessage("/amb removeqq <QQ> -> 删除一个绑定数据")
+            sender.sendMessage("/amb look <QQ> -> 通过QQ获取玩家名字")
             sender.sendMessage("/amb removename <Player_Name> -> 删除一个绑定数据")
             return true
         }
@@ -28,6 +29,14 @@ class Commands : TabExecutor {
                 Bot.start()
                 sender.sendMessage("§a所有配置文件已经重新载入!")
                 return true
+            }
+            "look" -> {
+                if (args.size < 2) {
+                    sender.sendMessage("§4缺失参数: §a<QQ>")
+                    val player = Bukkit.getOfflinePlayer(userData.getPlayer(args[1].toLong()))
+                    sender.sendMessage("QQ:${args[0]}的名字为:${player.name}")
+                    return true
+                }
             }
             "removename" -> {
                 if (args.size < 2) {

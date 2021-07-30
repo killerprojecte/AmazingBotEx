@@ -30,7 +30,7 @@ abstract class SQLSource {
     private fun createTab() {
         val sql = "CREATE TABLE IF NOT EXISTS $tabName " +
                 "(" +
-                "qq LONG PRIMARY KEY NOT NULL," +
+                "qq BIGINT(20) PRIMARY KEY NOT NULL," +
                 "uuid VARCHAR(255) NOT NULL," +
                 "name VARCHAR(255) NOT NULL" +
                 ");"
@@ -42,7 +42,7 @@ abstract class SQLSource {
             DataType.SQLITE -> {
                 Class.forName("org.sqlite.JDBC")
                 this.connection =
-                    DriverManager.getConnection("jdbc:sqlite:${AmazingBot.getInstance().dataFolder}${File.separator}data.db")
+                    DriverManager.getConnection("jdbc:sqlite:${EasyBot.INSTANCE.dataFolder}${File.separator}data.db")
                 this.dataBase = connection.createStatement()
                 EasyBot.INSTANCE.logger.info("open database 'data.db' success")
             }
@@ -51,10 +51,11 @@ abstract class SQLSource {
                 this.mysqlUser = mysql.getString("storage.username")
                 this.mysqlPassword = mysql.getString("storage.password")
                 val dbUrl = String.format(
-                    "jdbc:mysql://%s:%s/%s?autoReconnect=true",
+                    "jdbc:mysql://%s:%s/%s?autoReconnect=true&useSSL=%s",
                     mysql.getString("storage.host"),
                     mysql.getString("storage.port"),
-                    mysql.getString("storage.database")
+                    mysql.getString("storage.database"),
+                    mysql.getString("storage.useSSL")
                 )
                 Class.forName("com.mysql.jdbc.Driver")
                 this.connection = DriverManager.getConnection(dbUrl, mysqlUser, mysqlPassword)

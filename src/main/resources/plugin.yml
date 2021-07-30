@@ -5,7 +5,7 @@
 
 name: AmazingBot
 main: com.xbaimiao.easybot.EasyBot
-version: 3.1.7
+version: 3.2.0
 authors: ['xbaimiao']
 
 api-version: 1.13

@@ -13,6 +13,7 @@ object SQLImpl : UserData, SQLSource() {
 
     init {
         if (DataType.isSQL()) {
+            println(hasData())
             if (!hasData()) {
                 AmazingBot.getInstance().logger.info("§c检测到切换到sql储存,且尚未有任何绑定数据,开始从YAML导入....")
                 val data = AmazingBot.getData()
@@ -32,7 +33,7 @@ object SQLImpl : UserData, SQLSource() {
         if (result.next()) {
             return true
         }
-        return AmazingBot.getData().getKeys(true).isNotEmpty()
+        return AmazingBot.getData().getKeys(true).isEmpty()
     }
 
     override fun setBind(qq: Long, uuid: String) {

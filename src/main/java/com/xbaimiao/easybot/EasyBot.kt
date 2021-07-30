@@ -31,7 +31,7 @@ class EasyBot : JavaPlugin() {
         MiraiLoader.start()
     }
 
-    var data: Setting? = null
+    lateinit var data: Setting
         private set
 
     lateinit var userData: UserData
@@ -44,12 +44,12 @@ class EasyBot : JavaPlugin() {
         registerEvent(OnBind())
         registerEvent(OnCommand())
         Bukkit.getScheduler().runTaskLater(this, Runnable { Bot.start() }, 30L)
+        data = Setting(INSTANCE, "data.yml")
         if (DataType.isSQL()) {
             userData = SQLImpl
             logger.info("enable sql save this bot data")
             return
         }
-        data = Setting(INSTANCE, "data.yml")
         userData = Yaml()
         logger.info("enable yaml save this bot data")
     }
