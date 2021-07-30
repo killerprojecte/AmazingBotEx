@@ -1,4 +1,6 @@
-package com.xbaimiao.easybot;
+package com.xbaimiao.easybot.load;
+
+import com.xbaimiao.easybot.EasyBot;
 
 import java.io.*;
 import java.net.URL;

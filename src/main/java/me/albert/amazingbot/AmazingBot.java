@@ -4,6 +4,7 @@ import com.xbaimiao.easybot.EasyBot;
 import com.xbaimiao.easybot.data.UserData;
 import com.xbaimiao.easybot.utils.Setting;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 保留原有api，主类已移动至 EasyBot
@@ -16,10 +17,12 @@ public class AmazingBot {
         return EasyBot.INSTANCE;
     }
 
+    @NotNull
     public static Setting getData() {
         return EasyBot.INSTANCE.getData();
     }
 
+    @NotNull
     public static UserData getBindIO() {
         return EasyBot.INSTANCE.getUserData();
     }

@@ -1,4 +1,4 @@
-package com.xbaimiao.easybot
+package com.xbaimiao.easybot.load
 
 /* Download the mirai library during the first loading
  * This can highly reduce the size of jar file
@@ -6,6 +6,7 @@ package com.xbaimiao.easybot
  *
  * This system is completely depent on Taboolib library system
  */
+import com.xbaimiao.easybot.EasyBot
 import com.xbaimiao.easybot.utils.IO
 import java.io.File
 

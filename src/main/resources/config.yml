@@ -18,10 +18,6 @@ groups:
     command: "sudo"
     #是否启用绑定机制
     enable_bind: true
-    #是否开启进群退群消息
-    enable_news: true
-    join: "欢迎新玩家进群~,嘤嘤嘤"
-    quit: "QQ {0} 退群了,他绑定的id为 {1},绑定数据已移除elseQQ {0} 退群了,他没有绑定id"
 server_name: ""
 bd: /bd
 #是否异步调用事件

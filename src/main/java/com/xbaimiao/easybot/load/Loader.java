@@ -1,4 +1,4 @@
-package com.xbaimiao.easybot;
+package com.xbaimiao.easybot.load;
 
 import org.bukkit.Bukkit;
 import sun.misc.Unsafe;

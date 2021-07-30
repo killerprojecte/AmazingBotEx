@@ -1,9 +1,11 @@
 package com.xbaimiao.easybot
 
+import com.xbaimiao.easybot.data.DataType
 import com.xbaimiao.easybot.data.UserData
-import com.xbaimiao.easybot.data.sql.MySQL
-import com.xbaimiao.easybot.data.sql.SQLite
+import com.xbaimiao.easybot.data.sql.SQLImpl
 import com.xbaimiao.easybot.data.yaml.Yaml
+import com.xbaimiao.easybot.load.KotlinLoader
+import com.xbaimiao.easybot.load.MiraiLoader
 import com.xbaimiao.easybot.utils.Setting
 import me.albert.amazingbot.AmazingBot
 import me.albert.amazingbot.bot.Bot
@@ -29,7 +31,7 @@ class EasyBot : JavaPlugin() {
         MiraiLoader.start()
     }
 
-    lateinit var data: Setting
+    var data: Setting? = null
         private set
 
     lateinit var userData: UserData
@@ -42,17 +44,12 @@ class EasyBot : JavaPlugin() {
         registerEvent(OnBind())
         registerEvent(OnCommand())
         Bukkit.getScheduler().runTaskLater(this, Runnable { Bot.start() }, 30L)
+        if (DataType.isSQL()) {
+            userData = SQLImpl
+            logger.info("enable sql save this bot data")
+            return
+        }
         data = Setting(INSTANCE, "data.yml")
-        if (MySQL.isENABLED()) {
-            userData = MySQL()
-            logger.info("enable mysql save this bot data")
-            return
-        }
-        if (SQLite.isEnable) {
-            userData = SQLite
-            logger.info("enable sqlite save this bot data")
-            return
-        }
         userData = Yaml()
         logger.info("enable yaml save this bot data")
     }
