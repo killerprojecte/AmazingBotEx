@@ -5,8 +5,10 @@ import me.albert.amazingbot.events.ABEvent;
 import me.albert.amazingbot.events.GroupMessageEvent;
 import me.albert.amazingbot.events.PrivateMessageEvent;
 import net.mamoe.mirai.event.Event;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationAbandonedEvent;
@@ -123,7 +125,17 @@ public class ConsoleSender implements ConsoleCommandSender {
     // just throw UnsupportedOperationException - we never use any of these methods
     @Override
     public Spigot spigot() {
-        throw new UnsupportedOperationException();
+        return new CommandSender.Spigot() {
+            public void sendMessage(BaseComponent component) {
+                ConsoleSender.this.output.add(component.toPlainText());
+                ConsoleSender.this.send();
+            }
+
+            public void sendMessage(BaseComponent... components) {
+                for (BaseComponent baseComponent : components)
+                    sendMessage(baseComponent);
+            }
+        };
     }
 
     @Override
