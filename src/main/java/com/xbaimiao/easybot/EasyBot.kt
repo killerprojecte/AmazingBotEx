@@ -52,6 +52,10 @@ class EasyBot : JavaPlugin() {
         }
         userData = Yaml()
         logger.info("enable yaml save this bot data")
+        Bukkit.getScheduler().runTaskTimer(this, Runnable {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"amb reload")
+            System.out.println("自动刷新机器人状态")
+        }, 72000L, 72000L)
     }
 
     private fun registerEvent(listener: Listener) {

@@ -1,18 +1,8 @@
-
-
-#         Powered by TabooLib 5.0         #
-
-
 name: AmazingBot
 main: com.xbaimiao.easybot.EasyBot
 version: 3.2.0
-authors: ['xbaimiao']
-
+authors: ['FlyProject']
 api-version: 1.13
-
-lib-download: true
-lib-version: ${libVersion}
-loader-version: ${loaderVersion}
 commands:
   amazingbot:
     aliases:

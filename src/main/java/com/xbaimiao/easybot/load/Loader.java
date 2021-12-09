@@ -25,6 +25,7 @@ public class Loader extends URLClassLoader {
             Object lookupBase = unsafe.staticFieldBase(lookupField);
             long lookupOffset = unsafe.staticFieldOffset(lookupField);
             lookup = (Lookup) unsafe.getObject(lookupBase, lookupOffset);
+
         } catch (Throwable ignored) {
         }
 

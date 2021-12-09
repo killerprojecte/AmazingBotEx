@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.xbaimiao.easybot'
-version = '3.2.1@mirai-2.7.1-dev-1'
+version = '3.3.0'
 
 tasks.withType(JavaCompile) {
     options.setEncoding("UTF-8")
@@ -32,9 +32,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly "net.mamoe:mirai-core:2.6.5"
+    compileOnly "net.mamoe:mirai-core:2.9.0-M1"
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib"
-    compileOnly files("C:\\Users\\31040\\iCloudDrive\\Intellij IDEA\\libs\\Spigot\\spigot-1.12.2.jar")
+    compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
     compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
     implementation fileTree(dir: 'libs/implementation', includes: ['*.jar'])
 }

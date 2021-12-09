@@ -4,7 +4,7 @@ main:
   #是否启用控制台实时输出机器人收到和发送的信息
   #可用于检查机器人是否正常,如果看得到发送的信息说明腾讯暂时屏蔽了
   botlog: false
-  # ANDROID_PAD 平板 ANDROID_PHONE 手机 ANDROID_WATCH 手表
+  # ANDROID_PAD 平板 ANDROID_PHONE 手机 ANDROID_WATCH 手表 IPAD 苹果平板 MACOS 苹果电脑
   protocol: ANDROID_PAD
 debug: false
 #绑定数据存储模式 可选yaml 或者 sqlite 或者 mysql
