@@ -39,7 +39,6 @@ public class Bot {
             }
         };
         configuration.setProtocol(BotConfiguration.MiraiProtocol.valueOf(config.getString("main.protocol")));
-
         if (!config.getBoolean("main.botlog")) {
             configuration.noBotLog();
             configuration.noNetworkLog();
